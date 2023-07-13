@@ -39,7 +39,7 @@ func main() {
 	deseqd := int(math.Round(100 * ((fmdi - fmndi) / fmndi)))
 	deseqt := int(math.Round(100 * ((fmtr - fmntr) / fmntr)))
 
-	if efic < 55 {
+	if efic > 55 {
 		fmt.Printf("Eficiência aprovada com valor de %d%%.\n", efic)
 	} else {
 		fmt.Printf("Eficiência reprovada com valor de %d%%.\n", efic)
