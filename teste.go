@@ -1,20 +1,44 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"math"
+	"os"
 )
 
 func main() {
-	peso := []float64{4199, 4179, 2923, 2815}
-	forc := []float64{3453, 3120, 1962, 1452}
+	type Data struct {
+		Data []float64 `json:"data"`
+	}
+	file, err := os.Open("report-data.json")
+	if err != nil {
+		fmt.Println("Erro abrindo", err)
+		return
+	}
+	defer file.Close()
+
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Println("Erro lendo", err)
+		return
+	}
+	var jsonData Data
+	if err := json.Unmarshal(content, &jsonData); err != nil {
+		fmt.Println("Erro parsing", err)
+	}
+	med := jsonData.Data
+	peso := med[0:4]
+	forc := med[4:8]
+	//pbrake := med[9]
 	fsum := 0.0
 	psum := 0.0
-	for _, n1 := range forc {
-		fsum += n1
+	for _, n := range forc {
+		fsum += n
 	}
-	for _, n2 := range peso {
-		psum += n2
+	for _, n := range peso {
+		psum += n
 	}
 	efic := int(math.Round((fsum / psum) * 100))
 
@@ -49,4 +73,8 @@ func main() {
 	} else {
 		fmt.Printf("Desequilibrio reprovado com valores dianteiro %d%% e traseiro %d%%.\n", deseqd, deseqt)
 	}
+}
+
+func eqt() {
+
 }
