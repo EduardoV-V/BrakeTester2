@@ -1,5 +1,6 @@
 package main
 
+//Importando pacotes
 import (
 	"encoding/json"
 	"fmt"
@@ -8,10 +9,13 @@ import (
 	"os"
 )
 
+//FUnção principal (Necessária pro código funcionar)
 func main() {
+//Essa parte define o tipo de dado do arquivo json (data = float64) *obs: float e int tem que ser declarados como "float64" e "int64"
 	type Data struct {
 		Data []float64 `json:"data"`
 	}
+	//report de erro na leitura, caso aconteça
 	file, err := os.Open("report-data.json")
 	if err != nil {
 		fmt.Println("Erro abrindo", err)
@@ -24,6 +28,7 @@ func main() {
 		fmt.Println("Erro lendo", err)
 		return
 	}
+	//Essa parte serve para ler o arquivo json, com a função "unmarshal" e salva ela na variavel jsonData
 	var jsonData Data
 	if err := json.Unmarshal(content, &jsonData); err != nil {
 		fmt.Println("Erro parsing", err)
@@ -34,6 +39,7 @@ func main() {
 	//pbrake := med[9]
 	fsum := 0.0
 	psum := 0.0
+	//aqui são os cálculos matemáticos, funciona igual ao python, praticamente
 	for _, n := range forc {
 		fsum += n
 	}
@@ -62,7 +68,8 @@ func main() {
 	}
 	deseqd := int(math.Round(100 * ((fmdi - fmndi) / fmndi)))
 	deseqt := int(math.Round(100 * ((fmtr - fmntr) / fmntr)))
-
+	
+	//Essa parte lê os resultados e define se foram bons ou não.
 	if efic > 55 {
 		fmt.Printf("Eficiência aprovada com valor de %d%%.\n", efic)
 	} else {
